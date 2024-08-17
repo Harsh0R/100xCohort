@@ -36,7 +36,7 @@ const findHashWithPrefixOfInputAndOutput = (IPprifix ,OPprefix) => {
 
 const hash = hashingFunc('Hello');
 const hashWithPrefix = findHashWithPrefix('00000')
-const hashWithPrefixOfInputAlso = findHashWithPrefixOfInputAndOutput('HarshRadadiya','000000')
+const hashWithPrefixOfInputAlso = findHashWithPrefixOfInputAndOutput('HarshRadadiya','0000000')
 
 // console.log(hash)
 console.log(hashWithPrefixOfInputAlso.IPstr , '=>',hashWithPrefixOfInputAlso.hash)
