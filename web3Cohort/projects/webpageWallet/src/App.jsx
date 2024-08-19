@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import './App.css'
 import Navbar from './Components/Navbar/Navbar'
+import { WalletProvider } from './Context/WalletProvider';
+import SeedPage from './Pages/SeedPage/SeedPage';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from './Pages/Home/Home';
 
 function App() {
 
@@ -17,25 +21,17 @@ function App() {
   };
 
   return (
-    <div className='container'>
-      <Navbar />
-      <div className="app-container">
-        
-        <div>Webpage wallet.</div>
-      <main className="main-content">
-        <input
-          type="text"
-          placeholder="Enter your secret phrase (or leave blank to generate)"
-          value={secretPhrase}
-          onChange={(e) => setSecretPhrase(e.target.value)}
-          className="input-box"
-        />
-        <button onClick={handleGenerateWallet} className="generate-button">
-          Generate Wallet
-        </button>
-      </main>
-    </div>
-    </div>
+    <WalletProvider>
+      <div className='container'>
+        <BrowserRouter>
+          <Navbar />
+          <Routes>
+            <Route exact path='/' element={<Home />} />
+            <Route exact path='/seed' element={<SeedPage />} />
+          </Routes>
+        </BrowserRouter>
+      </div>
+    </WalletProvider>
   )
 }
 

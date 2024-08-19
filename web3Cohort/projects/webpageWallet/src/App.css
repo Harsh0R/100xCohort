@@ -44,10 +44,7 @@
 
 .container{
   /* border: 5px solid wheat; */
-  /* width: 100%; */
-}
-
-.app-container {
+  width: 100%;
   /* text-align: center; */
   background-color: #1a1a1a;
   color: white;
