@@ -1,15 +1,30 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { WalletContext } from '../../Context/WalletProvider';
 import './Home.modules.css';
+import Addresses from '../../Components/Addresses/Addresses';
 
 const Home = () => {
     const navigate = useNavigate();
-    const { generateNewSeed, seedPhrase } = useContext(WalletContext);
+    const { generateNewSeed, seedPhrase, clearSeedPhrase } = useContext(WalletContext);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [seeds, setSeeds] = useState([]);
+    console.log("seed in Home ==> ", seedPhrase);
 
-    console.log("seed in Home ==> " , seedPhrase);
-    
+    useEffect(() => {
+
+        if (seedPhrase) {
+            const seedArr = seedPhrase.split(' ');
+            setSeeds(seedArr);
+        }
+
+    }, [seedPhrase])
+
+
+    const handleClear = () => {
+        clearSeedPhrase();
+        setSeeds([]);
+    };
 
     const handleSeedPage = async (generateNew) => {
         if (generateNew) {
@@ -21,41 +36,42 @@ const Home = () => {
     };
 
     const handleCopy = () => {
-        // const phrase = seedPhrase.join(" ");
         navigator.clipboard.writeText(seedPhrase);
         alert("Seed phrase copied to clipboard!");
     };
 
-    const toggleDropdown = () => {
-        setIsDropdownOpen(!isDropdownOpen);
-    };
 
     return (
         <div className="secret-phrase-container">
-            {seedPhrase ? (
-                <>
-                    <div className="dropdown-wrapper">
-                        <button className="dropdown-header" onClick={toggleDropdown}>
-                            <p className="dropdown-title">Current Secret Phrase</p>
-                            <span className={`dropdown-arrow ${isDropdownOpen ? 'open' : ''}`}>&#x25BC;</span>
-                        </button>
-                        {isDropdownOpen && (
-                            <>
-                                <div className="dropdown-content">
-                                    {seedPhrase.split(' ').map((word, index) => (
-                                        <div key={index} className="dropdown-item">
-                                            {index + 1}. {word}
-                                        </div>
-                                    ))}
-                                </div>
-                                <button onClick={handleCopy} className="copy-button">Copy Seed Phrase</button>
-                            </>
-                        )}
+            {seeds && seeds.length > 0 ? (
+                <div className="dropdown-wrapper">
+                    <div
+                        className="dropdown-header"
+                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                    >
+                        <p className="dropdown-title">Current Seed Phrase</p>
+                        <span className={`dropdown-arrow ${isDropdownOpen ? 'open' : ''}`}>
+                            &#9662;
+                        </span>
                     </div>
-                    <button onClick={() => handleSeedPage(false)} className="copy-button">
-                        Enter Your Secret Phrase
+                    <div className={`dropdown-content ${isDropdownOpen ? 'open' : ''}`}>
+                        {seeds.map((word, index) => (
+                            <div
+                                key={index}
+                                className="dropdown-item"
+                                style={{ '--delay': `${index * 0.1}s` }}
+                            >
+                                {index + 1}. {word}
+                            </div>
+                        ))}
+                    </div>
+                    <button onClick={handleCopy} className="copy-button">
+                        Copy Seed Phrase
                     </button>
-                </>
+                    <button onClick={handleClear} className="clear-button">
+                        Clear Seed Phrase
+                    </button>
+                </div>
             ) : (
                 <div className="button-container">
                     <button onClick={() => handleSeedPage(false)} className="show-inputs-button">
@@ -66,6 +82,15 @@ const Home = () => {
                     </button>
                 </div>
             )}
+            {
+                seeds && (
+                    <div className='addressContainer'>
+
+                        <Addresses />
+
+                    </div>
+                )
+            }
 
 
 

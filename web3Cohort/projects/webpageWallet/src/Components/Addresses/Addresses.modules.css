@@ -1,0 +1,56 @@
+.containerAddress {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between; 
+    margin: 20px;
+}
+
+.containerAddress h3 {
+    margin: 0; 
+}
+
+.button-container {
+    display: flex;
+    width: 100%;
+    max-width: 400px; 
+    margin-left: 20px; 
+}
+
+.button-container button {
+    flex: 1;
+    max-width: fit-content; 
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #444;
+    color: white;
+    cursor: pointer;
+    text-align: center; 
+}
+
+.button-container button:not(:last-child) {
+    margin-right: 10px; 
+}
+
+.button-container button:hover {
+    background-color: #555;
+}
+
+.address-display {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #222222;
+}
+
+.address-display h4 {
+    margin: 0 0 10px 0;
+    font-size: 16px;
+}
+
+.address-display p {
+    font-size: 14px;
+    word-break: break-all;
+}

@@ -16,6 +16,10 @@
     /* Space between buttons */
 }
 
+.addressContainer{
+    width: 100%;
+}
+
 .show-inputs-button {
     padding: 10px 20px;
     background-color: #444444;
@@ -115,6 +119,28 @@
     border-radius: 15px;
     text-align: center;
     font-size: 14px;
+}
+
+
+
+
+.clear-button {
+    grid-column: span 3; /* Adjust as needed */
+    margin-top: 15px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #d9534f; /* Bootstrap's red color */
+    color: rgb(0, 0, 0);
+    cursor: pointer;
+    width: 100%;
+    transform: translateY(10px);
+    animation: fadeInUp 0.4s forwards ease;
+    animation-delay: calc(var(--delay) + 0.2s);
+}
+
+.clear-button:hover {
+    background-color: #c9302c; /* Darker red on hover */
 }
 
 
