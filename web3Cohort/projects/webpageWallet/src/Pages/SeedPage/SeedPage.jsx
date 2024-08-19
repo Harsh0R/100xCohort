@@ -1,8 +1,9 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import backButton from '../../assets/imgs/backButton.png'; // Ensure this path is correct
+ 
 import SecretPhrase from '../../Components/SecretPhrase/SecretPhrase';
-import "./SeedPage.modules.css";
+import Style from "./SeedPage.module.css";
+import {  backButton1 } from '../../assets/imgs';
 
 const SeedPage = () => {
     const nav = useNavigate();
@@ -15,12 +16,12 @@ const SeedPage = () => {
     const seedPhrase = location.state?.seedPhrase || '';
 
     return (
-        <div className='containerseed'>
-            <div className="header-container">
+        <div className={Style.containerseed}>
+            <div className={Style.headercontainer}>
                 <img
-                    className='imgclass'
+                    className={Style.imgclass}
                     onClick={handleBackButton}
-                    src={backButton}
+                    src={backButton1}
                     alt="Back"
                 />
                 {/* <h1>WEBPAGE WALLET</h1> */}

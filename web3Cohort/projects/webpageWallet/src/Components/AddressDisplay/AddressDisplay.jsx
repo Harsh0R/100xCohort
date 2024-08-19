@@ -1,13 +1,13 @@
 import React from 'react';
-import './AddressDisplay.modules.css';
+import Style from './AddressDisplay.module.css';
 
 const AddressDisplay = ({ type, address, onDelete }) => {
     return (
-        <div className='addressDisplay'>
-            <div className='addressInfo'>
+        <div className={Style.addressDisplay}>
+            <div className={Style.addressInfo}>
                 <p><strong>{type} Address:</strong> {address}</p>
             </div>
-            <button onClick={onDelete} className='deleteButton'>
+            <button onClick={onDelete} className={Style.deleteButton}>
                 Delete
             </button>
         </div>

@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
-import './Addresses.modules.css';
 import { WalletContext } from '../../Context/WalletProvider';
 import AddressDisplay from '../AddressDisplay/AddressDisplay';
+import Style from './Addresses.module.css';
 
 const Addresses = () => {
     const { getEthAddress, seedPhrase, getSolAddress } = useContext(WalletContext);
@@ -62,21 +62,19 @@ const Addresses = () => {
 
     return (
         <>
-            <div className='containerAddress'>
-                <h3>Wallets :</h3>
-                <div className="button-container">
+            <div className={Style.containerAddress}>
+                <h3>Wallets Address</h3>
+                <div className={Style.buttoncontainer}>
                     <button onClick={handleSolanaAddress}>Generate Solana Wallet</button>
                     <button onClick={handleEthOrPolyAddress}>Generate Ethereum / Polygon Wallet</button>
                 </div>
             </div>
-
-            {/* Render the AddressDisplay components below all other components */}
             {generatedAddresses.map((entry, index) => (
                 <AddressDisplay
                     key={index}
                     type={entry.type}
                     address={entry.address}
-                    onDelete={() => handleDeleteAddress(index)} // Pass the delete function
+                    onDelete={() => handleDeleteAddress(index)} 
                 />
             ))}
         </>

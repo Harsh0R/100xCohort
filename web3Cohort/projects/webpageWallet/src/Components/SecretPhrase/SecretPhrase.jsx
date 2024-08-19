@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import './SecretPhrase.modules.css';
 import { WalletContext } from '../../Context/WalletProvider';
 import { useNavigate } from 'react-router-dom';
+import Style from './SecretPhrase.module.css';
 
 const SecretPhrase = ({ seeds }) => {
     const [seedPhrase, setSeedPhrase] = useState(Array(12).fill("")); // Initialize with 12 empty strings
     const [showInputs, setShowInputs] = useState(false); // State to control input visibility
     const dropdownRef = useRef(null);
-    const { getEthAddress  , setSeedPhrases} = useContext(WalletContext);
+    const { getEthAddress, setSeedPhrases } = useContext(WalletContext);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -19,38 +19,40 @@ const SecretPhrase = ({ seeds }) => {
     const handleNext = () => {
         const combined = seedPhrase.join(' ');
         localStorage.setItem("seedWords", combined);
-        console.log("Seed Phrases ===>>> " , combined);
+        console.log("Seed Phrases ===>>> ", combined);
         
-        setSeedPhrases(combined)
+        setSeedPhrases(combined);
         navigate('/');
     };
 
     const handleInputChange = (index, value) => {
-        const newSeedPhrase = [...seedPhrase];
-        newSeedPhrase[index] = value.trim();
-
-        // Combine all inputs to detect if words exceed the total count
-        const combined = newSeedPhrase.join(' ');
-        const words = combined.split(' ');
-
-        // Update the state with the new words
-        if (words.length <= 12) {
-            setSeedPhrase([...words, ...Array(12 - words.length).fill("")]);
-        } else {
-            // If more than 12 words, truncate to 12 words
-            setSeedPhrase(words.slice(0, 12));
-        }
-
-        // Move focus to the next input
-        if (index < 11 && words[index].length > 0) {
-            document.getElementById(`input-${index + 1}`).focus();
-        }
-        console.log("Seed ==> " , seedPhrase);
+        let words = value.trim().split(' ');
         
-    };
-
-    const handleCreateAccount = async () => {
-        getEthAddress(seedPhrase.join(' '));
+        if (words.length > 1) {
+            // Distribute the words across the input boxes starting from the current index
+            const newSeedPhrase = [...seedPhrase];
+            words.forEach((word, i) => {
+                if (index + i < 12) {
+                    newSeedPhrase[index + i] = word;
+                }
+            });
+            setSeedPhrase(newSeedPhrase);
+            
+            // Move focus to the appropriate input box after paste
+            if (index + words.length - 1 < 12) {
+                document.getElementById(`input-${index + words.length - 1}`).focus();
+            }
+        } else {
+            // Handle normal single-word input
+            const newSeedPhrase = [...seedPhrase];
+            newSeedPhrase[index] = value.trim();
+            setSeedPhrase(newSeedPhrase);
+            
+            // Move focus to the next input only if space key was pressed
+            if (value.endsWith(' ') && index < 11) {
+                document.getElementById(`input-${index + 1}`).focus();
+            }
+        }
     };
 
     const handleCopy = () => {
@@ -67,34 +69,34 @@ const SecretPhrase = ({ seeds }) => {
     }, [showInputs]);
 
     return (
-        <div className="secret-phrase-container">
+        <div className={Style.secretphrasecontainer}>
             {seeds ? (
                 <div>
                     <h1>Your Seed Phrase</h1>
                     <div>
                         <p>Please save this seed phrase securely:</p>
-                        <div className="seed-phrase-grid">
+                        <div className={Style.seedphrasegrid}>
                             {seeds.split(' ').map((word, index) => (
-                                <span key={index} className="seed-word">{word}</span>
+                                <span key={index} className={Style.seedword}>{word}</span>
                             ))}
                         </div>
-                        <button onClick={handleCopy} className="copy-button">Copy Seed Phrase</button>
+                        <button onClick={handleCopy} className={Style.copybutton}>Copy Seed Phrase</button>
                     </div>
-                    <button onClick={handleNext} className="copy-button">Next</button>
+                    <button onClick={handleNext} className={Style.copybutton}>Next</button>
                 </div>
             ) : (
                 <div>
                     <p>No seed phrase provided. Please enter your existing seed phrase.</p>
-                    <button onClick={() => setShowInputs(!showInputs)} className="show-inputs-button">
+                    <button onClick={() => setShowInputs(!showInputs)} className={Style.showinputsbutton}>
                         Enter Your Secret Phrase
                     </button>
-                    <div ref={dropdownRef} className={`dropdown-container ${showInputs ? 'open' : ''}`}>
-                        <div className="phrase-grid">
+                    <div ref={dropdownRef} className={`${Style.dropdowncontainer} ${showInputs ? 'open' : ''}`}>
+                        <div className={Style.phrasegrid}>
                             {seedPhrase.map((word, index) => (
                                 <input
                                     id={`input-${index}`}
                                     key={index}
-                                    className="word-box"
+                                    className={Style.wordbox}
                                     type="text"
                                     value={word}
                                     onChange={(e) => handleInputChange(index, e.target.value)}
@@ -103,9 +105,9 @@ const SecretPhrase = ({ seeds }) => {
                             ))}
                         </div>
                         <div>
-                            <button onClick={handleCopy} className="copy-button">Copy Seed Phrase</button>
+                            <button onClick={handleCopy} className={Style.copybutton}>Copy Seed Phrase</button>
                         </div>
-                        <button onClick={handleNext} className="copy-button">Next</button>
+                        <button onClick={handleNext} className={Style.copybutton}>Next</button>
                     </div>
                 </div>
             )}

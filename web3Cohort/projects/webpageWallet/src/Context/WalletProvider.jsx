@@ -16,7 +16,7 @@ export const WalletContext = createContext();
 
 export const WalletProvider = ({ children }) => {
 
-    const [seedPhrase, setSeedPhrases] = useState('')
+    const [seedPhrase, setSeedPhrases] = useState()
     const [ETHaddresses, setETHaddresses] = useState([])
     const [SOLaddresses, setSOLaddresses] = useState([])
 
@@ -24,14 +24,15 @@ export const WalletProvider = ({ children }) => {
 
 
     useEffect(() => {
-        localStorage.removeItem('seedWords');
+        // localStorage.removeItem('seedWords');
         const seedWords = localStorage.getItem("seedWords");
+        
         console.log("see => ", seedWords);
         console.log("seePh => ", seedPhrase);
 
         setSeedPhrases(seedPhrase)
         console.log("Words ==> ", seedWords);
-    }, [])
+    }, [setSeedPhrases , seedPhrase])
 
 
 
